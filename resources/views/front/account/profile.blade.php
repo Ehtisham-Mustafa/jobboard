@@ -19,9 +19,9 @@
                 <div class="col-lg-9">
                     @include('front.message')
                     <div class="card border-0 shadow mb-4">
-                        <form id="userForm" enctype="multipart/form-data" action="{{route("account.updateProfile")}}" method="post" name="userForm">
+                        <form id="userForm" enctype="multipart/form-data" method="post" name="userForm">
                             {{csrf_field()}}
-                            @method('PUT')
+            
                             <div class="card-body  p-4">
                                 <h3 class="fs-4 mb-1">My Profile</h3>
 
@@ -29,25 +29,41 @@
                                     <label for="" class="mb-2">Name*</label>
                                     <input type="text" placeholder="Enter Name" name="name" id="name"
                                            class="form-control" value="{{$user->name}}">
-                                    <p></p>
+                                    <span class="text-danger">
+                                        @error('name')
+                                        {{$message}}
+                                        @enderror
+                                    </span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Email*</label>
                                     <input type="text" placeholder="Enter Email" name="email" id="email"
                                            class="form-control" value="{{$user->email}}">
-                                    <p></p>
+                                           <span class="text-danger">
+                                            @error('email')
+                                            {{$message}}
+                                            @enderror
+                                           </span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Designation</label>
                                     <input type="text" placeholder="Designation" name="designation" id="designation"
                                            class="form-control" value="{{$user->designation}}">
-                                    <p></p>
+                                           <span class="text-danger">
+                                            @error('designation')
+                                            {{$message}}
+                                            @enderror
+                                           </span>
                                 </div>
                                 <div class="mb-4">
                                     <label for="" class="mb-2">Mobile</label>
                                     <input type="text" placeholder="Mobile" name="phone" id="phone" class="form-control"
                                            value="{{$user->mobile}}">
-                                    <p></p>
+                                           <span class="text-danger">
+                                            @error('phone')
+                                            {{$message}}
+                                            @enderror
+                                           </span>
                                 </div>
                             </div>
                             <div class="card-footer  p-4">
@@ -82,36 +98,43 @@
     </section>
 @endsection
 @section('customJs')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script type="text/javascript">
-        $("#userForm").submit(function (e) {
-            e.preventDefault();
-            $.ajax({
-                url: '{{route("account.updateProfile")}}',
-                type: 'put',
-                dataType: 'json',
-                data: $("#userForm").serializeArray(),
-                success:function (response){
-                    if(response.status==true){
-                        $("#name").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
-                        $("#email").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
-                    window.location.href="{{route('account.profile')}}"
-                    }else{
-                        var errors=response.errors;
-                        if(errors.name){
-                            $("#name").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors.name);
-                        }else{
-                            $("#name").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
+    // $(document).ready(function() {
+    //     $("#userForm").submit(function (e) {
+    //         alert("Form submission intercepted!"); 
+    //         e.preventDefault();
+    //         $.ajax({
+    //             url: '{{route("account.updateProfile")}}',
+    //             type: 'post',
+    //             dataType: 'json',
+    //             data: $("#userForm").serializeArray(),
+    //             success:function (response){
+    //                 console.log(response);
+    //                 if(response.status==true){
+    //                     console.log(response.status);
+    //                     $("#name").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
+    //                     $("#email").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
+    //                 window.location.href="{{route('account.profile')}}"
+    //                 }else{
+    //                     var errors=response.errors;
+    //                     if(errors.name){
+    //                         $("#name").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors.name);
+    //                     }else{
+    //                         $("#name").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
 
-                        }
-                        if(errors.email){
-                            $("#email").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors.email);
-                        }else{
-                            $("#email").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
+    //                     }
+    //                     if(errors.email){
+    //                         $("#email").addClass('is-invalid').siblings('p').addClass('invalid-feedback').html(errors.email);
+    //                     }else{
+    //                         $("#email").removeClass('is-invalid').siblings('p').removeClass('invalid-feedback').html('');
 
-                        }
-                    }
-                }
-            });
-        });
+    //                     }
+    //                 }
+    //             }
+    //         });
+    //     });
+    // });
     </script>
 @endsection

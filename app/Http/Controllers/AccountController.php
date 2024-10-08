@@ -74,21 +74,27 @@ class AccountController extends Controller
     }
     public function updateProfile(Request $request){
         $id=Auth::id();
-                $validator=Validator::make($request->all(),[
+        $request->validate([
                     'name'=>'required|min:5',
                     'email'=>'required|email|unique:users,email,'.$id.',id',
+                    'designation'=>'required',
+                    'phone'=>'required'
                 ]);
-                if($validator->passes()){
-                    $user=User::find($id);
-                    $user->name=$request->name;
-                    $user->email=$request->email;
-                    $user->mobile=$request->phone;
-                    $user->designation=$request->designation;
+            
+                $user = User::find($id);
+
+                if ($user) {
+                    $user->name = $request->name;
+                    $user->email = $request->email;
+                    $user->mobile = $request->phone;
+                    $user->designation = $request->designation;
                     $user->save();
-                    Session()->flash('success','Profile updated successfully.');
-                    return response()->json(['status'=>true,'errors'=>[]]);
-                }else{
-                    return response()->json(['status'=>false,'errors'=>$validator->errors()]);
+            
+                    session()->flash('success', 'Profile updated successfully.');
+            
+                    return redirect()->back()->with('success', 'Profile updated successfully.');
+                } else {
+                    return redirect()->back()->withErrors($request->all);
                 }
     }
     public function logout()
