@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use App\Models\Category;
+use App\Models\JobType;
+use App\Models\BoardJob;
 
 class AccountController extends Controller
 {
@@ -135,5 +138,64 @@ class AccountController extends Controller
             return response()->json(['status'=>false,'errors'=>$validator->errors()]);
         }
     }
+    public function createJob() {
+
+        $categories = Category::orderBy('name','ASC')->where('status',1)->get();
+
+        $jobTypes = JobType::orderBy('name','ASC')->where('status',1)->get();
+
+        return view('front.account.job.create',[
+            'categories' =>  $categories,
+            'jobTypes' =>  $jobTypes,
+        ]);
+    }
+    public function saveJob(Request $request) {
+        // Validate the request
+        $request->validate([
+            'title' => 'required|min:5|max:200',
+            'category' => 'required',
+            'jobType' => 'required',
+            'vacancy' => 'required|integer',
+            'location' => 'required|max:50',
+            'description' => 'required',
+            'company_name' => 'required|min:3|max:75',
+        ]);
+    
+        try {
+            // Create a new job instance and populate it
+            $job = new BoardJob();
+            $job->title = $request->title;
+            $job->category_id = $request->category;
+            $job->job_type_id = $request->jobType;
+            $job->user_id = Auth::user()->id;
+            $job->vacancy = $request->vacancy;
+            $job->salary = $request->salary; 
+            $job->location = $request->location;
+            $job->description = $request->description;
+            $job->benefits = $request->benefits; 
+            $job->responsibility = $request->responsibility; 
+            $job->qualifications = $request->qualifications; 
+            $job->keywords = $request->keywords; 
+            $job->experience = $request->experience; 
+            $job->company_name = $request->company_name;
+            $job->company_location = $request->company_location; 
+            $job->company_website = $request->website; 
+    
+            // Save the job
+            $job->save();
+            session()->flash('success', 'Job added successfully.');
+            return redirect()->route('account.myJobs')->with('success', 'Job added successfully.');
+        } catch (\Exception $e) {
+            // Return with errors if the job could not be created
+            return redirect()->back()->withErrors($request->all);
+        }
+    }
+    public function myJobs() {    
+        $jobs = BoardJob::where('user_id',Auth::user()->id)->with('jobType')->orderBy('created_at','DESC')->paginate(10);        
+        return view('front.account.job.my-jobs',[
+            'jobs' => $jobs
+        ]);
+    } 
+    
 }
 
