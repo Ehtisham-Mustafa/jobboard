@@ -66,7 +66,7 @@
                                                     <ul class="dropdown-menu dropdown-menu-end">
                                                         {{-- <li><a class="dropdown-item" href="{{ route('jobDetail', $job->id) }}"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li> --}}
                                                         {{-- <li><a class="dropdown-item" href="{{ route('account.editJob', $job->id) }}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></li> --}}
-                                                        {{-- <li><a class="dropdown-item" href="#" onclick="deleteJob({{ $job->id }})" ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li> --}}
+                                                        <li><a class="dropdown-item" href="#" onclick="deleteJob({{ $job->id }})" ><i class="fa fa-trash" aria-hidden="true"></i> Delete</a></li>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -78,7 +78,7 @@
                                 </tbody>                                
                             </table>
                         </div>
-                        <div>
+                        <div class="row">
                             {{ $jobs->links() }}
                         </div>
                     </div>

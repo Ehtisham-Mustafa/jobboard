@@ -12,5 +12,8 @@ class BoardJob extends Model
     public function jobType() {
         return $this->belongsTo(JobType::class);
     }
+    public function category(){
+        return $this->belongsTo(Category::class);
+    }
 }
 
