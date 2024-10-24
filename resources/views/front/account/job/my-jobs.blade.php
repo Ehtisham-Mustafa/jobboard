@@ -88,20 +88,18 @@
     </div>
 </section>
 @endsection
-@section('customJs')
-<script type="text/javascript">   
-// function deleteJob(jobId) {
-//     if (confirm("Are you sure you want to delete?")) {
-//         $.ajax({
-//             url : '{{ route("account.deleteJob") }}',
-//             type: 'post',
-//             data: {jobId: jobId},
-//             dataType: 'json',
-//             success: function(response) {
-//                 window.location.href='{{ route("account.myJobs") }}';
-//             }
-//         });
-//     } 
-// }
+<script type="text/javascript"> 
+function deleteJob(jobId) {
+    if (confirm("Are you sure you want to delete?")) {
+        $.ajax({
+            url : '{{ route("account.deleteJob") }}',
+            type: 'post',
+            data: {jobId: jobId},
+            dataType: 'json',
+            success: function(response) {
+                window.location.href='{{ route("account.myJobs") }}';
+            }
+        });
+    } 
+}
 </script>
-@endsection
