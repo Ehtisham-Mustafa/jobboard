@@ -25,9 +25,16 @@ Route::group(['middleware'=>'guest'],function(){
         Route::post('profile', [AccountController::class, 'updateProfile'])->name('account.updateProfile') ;
         Route::get('logout', [AccountController::class, 'logout'])->name('account.logout') ;
         Route::post('update-profile-pic', [AccountController::class, 'updateProfilePic'])->name('account.updateProfilePic') ;
+
+        //JOb routes
+
         Route::get('create-job',[AccountController::class,'createJob'])->name('account.createJob');   
         Route::post('create-job',[AccountController::class,'saveJob'])->name('account.saveJob');   
         Route::get('my-jobs',[AccountController::class,'myJobs'])->name('account.myJobs');  
+        Route::get('my-jobs/edit/{jobId}',[AccountController::class,'editJob'])->name('account.editJob');  
+        Route::post('my-jobs/edit/{jobId}',[AccountController::class,'updateJob'])->name('account.updateJob');   
+
+
         Route::post('delete-job',[AccountController::class,'deleteJob'])->name('account.deleteJob');   
         Route::get('/my-job-applications',[AccountController::class,'myJobApplications'])->name('account.myJobApplications');  
 

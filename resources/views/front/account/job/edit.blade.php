@@ -21,6 +21,7 @@
                 @include('front.message')
 
                 <form action="" method="post" id="editJobForm" name="editJobForm">
+                    {{csrf_field()}}
                     <div class="card border-0 shadow mb-4 ">
                         <div class="card-body card-form p-4">
                             <h3 class="fs-4 mb-1">Edit Job Details</h3>
@@ -28,7 +29,11 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="" class="mb-2">Title<span class="req">*</span></label>
                                     <input value="{{ $job->title }}" type="text" placeholder="Job Title" id="title" name="title" class="form-control">
-                                    <p></p>
+                                    <span class="text-danger">
+                                        @error('title')
+                                        {{$message}}
+                                        @enderror
+                                    </span>
                                 </div>
                                 <div class="col-md-6  mb-4">
                                     <label for="" class="mb-2">Category<span class="req">*</span></label>
@@ -40,7 +45,11 @@
                                             @endforeach
                                         @endif
                                     </select>
-                                    <p></p>
+                                    <span class="text-danger">
+                                        @error('category')
+                                        {{$message}}
+                                        @enderror
+                                    </span>
                                 </div>
                             </div>
                             
@@ -55,12 +64,20 @@
                                             @endforeach
                                         @endif
                                     </select>
-                                    <p></p>
+                                    <span class="text-danger">
+                                        @error('jobType')
+                                        {{$message}}
+                                        @enderror
+                                    </span>
                                 </div>
                                 <div class="col-md-6  mb-4">
                                     <label for="" class="mb-2">Vacancy<span class="req">*</span></label>
                                     <input value="{{ $job->vacancy }}" type="number" min="1" placeholder="Vacancy" id="vacancy" name="vacancy" class="form-control">
-                                    <p></p>
+                                    <span class="text-danger">
+                                        @error('vacancy')
+                                        {{$message}}
+                                        @enderror
+                                    </span>
                                 </div>
                             </div>
 
@@ -73,26 +90,34 @@
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Location<span class="req">*</span></label>
                                     <input value="{{ $job->location }}" type="text" placeholder="Location" id="location" name="location" class="form-control">
-                                    <p></p>
+                                    <span class="text-danger">
+                                        @error('location')
+                                        {{$message}}
+                                        @enderror
+                                    </span>
                                 </div>
                             </div>
 
                             <div class="mb-4">
                                 <label for="" class="mb-2">Description<span class="req">*</span></label>
-                                <textarea class="textarea" name="description" id="description" cols="5" rows="5" placeholder="Description">{{ $job->description }}</textarea>
-                                <p></p>
+                                <textarea class="form-control" name="description" id="description" cols="5" rows="5" placeholder="Description">{{ $job->description }}</textarea>
+                                <span class="text-danger">
+                                    @error('description')
+                                    {{$message}}
+                                    @enderror
+                                </span>
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Benefits</label>
-                                <textarea class="textarea" name="benefits" id="benefits" cols="5" rows="5" placeholder="Benefits">{{ $job->benefits }}</textarea>
+                                <textarea class="form-control" name="benefits" id="benefits" cols="5" rows="5" placeholder="Benefits">{{ $job->benefits }}</textarea>
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Responsibility</label>
-                                <textarea class="textarea" name="responsibility" id="responsibility" cols="5" rows="5" placeholder="Responsibility">{{ $job->responsibility }}</textarea>
+                                <textarea class="form-control" name="responsibility" id="responsibility" cols="5" rows="5" placeholder="Responsibility">{{ $job->responsibility }}</textarea>
                             </div>
                             <div class="mb-4">
                                 <label for="" class="mb-2">Qualifications</label>
-                                <textarea class="textarea" name="qualifications" id="qualifications" cols="5" rows="5" placeholder="Qualifications">{{ $job->qualifications }}</textarea>
+                                <textarea class="form-control" name="qualifications" id="qualifications" cols="5" rows="5" placeholder="Qualifications">{{ $job->qualifications }}</textarea>
                             </div>
 
                             <div class="mb-4">
@@ -126,7 +151,11 @@
                                 <div class="mb-4 col-md-6">
                                     <label for="" class="mb-2">Name<span class="req">*</span></label>
                                     <input value="{{ $job->company_name }}" type="text" placeholder="Company Name" id="company_name" name="company_name" class="form-control">
-                                    <p></p>
+                                    <span class="text-danger">
+                                        @error('company_name')
+                                        {{$message}}
+                                        @enderror
+                                    </span>
                                 </div>
 
                                 <div class="mb-4 col-md-6">
@@ -154,146 +183,5 @@
 
 @section('customJs')
 <script type="text/javascript">
-$("#editJobForm").submit(function(e){
-    e.preventDefault();
-    $("button[type='submit']").prop('disabled',true);
-    $.ajax({
-        url: '{{ route("account.updateJob",$job->id) }}',
-        type: 'POST',
-        dataType: 'json',
-        data: $("#editJobForm").serializeArray(),
-        success: function(response) {
-            $("button[type='submit']").prop('disabled',false);
-            if(response.status == true) {
-
-                $("#title").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-
-                $("#category").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-
-                $("#jobType").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-
-                $("#vacancy").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-
-                $("#location").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-
-
-                $("#description").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-
-                $("#company_name").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-
-                window.location.href="{{ route('account.myJobs') }}";
-
-            } else {
-                var errors = response.errors;
-
-                if (errors.title) {
-                    $("#title").addClass('is-invalid')
-                    .siblings('p')
-                    .addClass('invalid-feedback')
-                    .html(errors.title)
-                } else {
-                    $("#title").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-                }
-
-                if (errors.category) {
-                    $("#category").addClass('is-invalid')
-                    .siblings('p')
-                    .addClass('invalid-feedback')
-                    .html(errors.category)
-                } else {
-                    $("#category").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-                }
-
-                if (errors.jobType) {
-                    $("#jobType").addClass('is-invalid')
-                    .siblings('p')
-                    .addClass('invalid-feedback')
-                    .html(errors.jobType)
-                } else {
-                    $("#jobType").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-                }
-
-                if (errors.vacancy) {
-                    $("#vacancy").addClass('is-invalid')
-                    .siblings('p')
-                    .addClass('invalid-feedback')
-                    .html(errors.vacancy)
-                } else {
-                    $("#vacancy").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-                }
-
-                if (errors.location) {
-                    $("#location").addClass('is-invalid')
-                    .siblings('p')
-                    .addClass('invalid-feedback')
-                    .html(errors.location)
-                } else {
-                    $("#location").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-                }
-
-                if (errors.description) {
-                    $("#description").addClass('is-invalid')
-                    .siblings('p')
-                    .addClass('invalid-feedback')
-                    .html(errors.description)
-                } else {
-                    $("#description").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-                }
-
-                if (errors.company_name) {
-                    $("#company_name").addClass('is-invalid')
-                    .siblings('p')
-                    .addClass('invalid-feedback')
-                    .html(errors.company_name)
-                } else {
-                    $("#company_name").removeClass('is-invalid')
-                    .siblings('p')
-                    .removeClass('invalid-feedback')
-                    .html('')
-                }
-            }
-
-        }
-    });
-});
 </script>
 @endsection
