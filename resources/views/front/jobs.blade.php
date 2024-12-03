@@ -44,18 +44,25 @@
                             </select>
                         </div>                   
 
-                        <div class="mb-4">
-                            <h2>Job Type</h2>
-                            
-                            @if ($jobTypes->isNotEmpty())
-                                @foreach ($jobTypes as $jobType)
-                                <div class="form-check mb-2"> 
-                                    <input {{ (in_array($jobType->id,$jobTypeArray)) ? 'checked' : ''}} class="form-check-input " name="job_type" type="checkbox" value="{{ $jobType->id }}" id="job-type-{{ $jobType->id }}">    
-                                    <label class="form-check-label " for="job-type-{{ $jobType->id }}">{{ $jobType->name }}</label>
-                                </div>
-                                @endforeach
-                            @endif
-                        </div>
+                  <div class="mb-4">
+    <h2>Job Type</h2>
+    @if ($jobTypes->isNotEmpty())
+        @foreach ($jobTypes as $jobType)
+            <div class="form-check mb-2"> 
+                <input 
+                    {{ (in_array($jobType->id, $jobTypeArray)) ? 'checked' : '' }} 
+                    class="form-check-input" 
+                    name="job_type[]" 
+                    type="checkbox" 
+                    value="{{ $jobType->id }}" 
+                    id="job-type-{{ $jobType->id }}">    
+                <label class="form-check-label" for="job-type-{{ $jobType->id }}">
+                    {{ $jobType->name }}
+                </label>
+            </div>
+        @endforeach
+    @endif
+</div>
 
                         <div class="mb-4">
                             <h2>Experience</h2>
@@ -135,7 +142,7 @@
     </div>
 </section>
 @endsection
-
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     $("#searchForm").submit(function(e){
         e.preventDefault();
@@ -151,7 +158,6 @@
         var checkedJobTypes = $("input:checkbox[name='job_type']:checked").map(function(){
             return $(this).val();
         }).get();
-
         // If keyword has a value
         if (keyword != "") {
             url += '&keyword='+keyword;
@@ -174,9 +180,8 @@
 
         // If user has checked job types
         if (checkedJobTypes.length > 0) {
-            url += '&jobType='+checkedJobTypes;
+            url += '&job_type='+checkedJobTypes;
         }
-
         url += '&sort='+sort;
 
         window.location.href=url;
