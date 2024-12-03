@@ -42,8 +42,8 @@ class JobsController extends Controller
 
         $jobTypeArray = [];
         // Search using Job Type
-        if(!empty($request->jobType)) {
-            $jobTypeArray = explode(',',$request->jobType);
+        if(!empty($request->job_type)) {
+            $jobTypeArray = explode(',',$request->job_type);
 
             $jobs = $jobs->whereIn('job_type_id',$jobTypeArray);
         }
