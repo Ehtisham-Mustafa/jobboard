@@ -40,7 +40,7 @@ class JobsController extends Controller
             $jobs = $jobs->where('category_id',$request->category);
         }
 
-        $jobTypeArray = [];
+    
         // Search using Job Type
 
         if(!empty($request->job_type)) {    

@@ -44,25 +44,25 @@
                             </select>
                         </div>                   
 
-                  <div class="mb-4">
-    <h2>Job Type</h2>
-    @if ($jobTypes->isNotEmpty())
-        @foreach ($jobTypes as $jobType)
-            <div class="form-check mb-2"> 
-                <input 
-                    {{ (in_array($jobType->id, $jobTypeArray)) ? 'checked' : '' }} 
-                    class="form-check-input" 
-                    name="job_type[]" 
-                    type="checkbox" 
-                    value="{{ $jobType->id }}" 
-                    id="job-type-{{ $jobType->id }}">    
-                <label class="form-check-label" for="job-type-{{ $jobType->id }}">
-                    {{ $jobType->name }}
-                </label>
-            </div>
-        @endforeach
-    @endif
-</div>
+                                    <div class="mb-4">
+                        <h2>Job Type</h2>
+                        @if ($jobTypes->isNotEmpty())
+                            @foreach ($jobTypes as $jobType)
+                                <div class="form-check mb-2"> 
+                                    <input 
+                                            {{ !empty($jobTypeArray)&&in_array($jobType->id, $jobTypeArray) ? 'checked' : '' }} 
+                                        class="form-check-input" 
+                                        name="job_type[]" 
+                                        type="checkbox" 
+                                        value="{{ $jobType->id }}" 
+                                        id="job-type-{{ $jobType->id }}">    
+                                    <label class="form-check-label" for="job-type-{{ $jobType->id }}">
+                                        {{ $jobType->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
 
                         <div class="mb-4">
                             <h2>Experience</h2>

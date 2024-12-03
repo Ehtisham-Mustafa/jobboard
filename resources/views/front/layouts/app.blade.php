@@ -114,6 +114,5 @@
 
 
 </script>
-@yield('customJS')
 </body>
 </html>
