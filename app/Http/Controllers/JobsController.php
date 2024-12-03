@@ -40,11 +40,12 @@ class JobsController extends Controller
             $jobs = $jobs->where('category_id',$request->category);
         }
 
-    
-        // Search using Job Type
 
-        if(!empty($request->job_type)) {    
-            $jobs = $jobs->whereIn('job_type_id',$request->job_type);
+        // Search using Job Type
+            $jobTypeArray=[];
+        if(!empty($request->job_type)) {
+            $jobTypeArray=explode(',',$request->job_type);
+            $jobs = $jobs->whereIn('job_type_id',$jobTypeArray);
         }
 
         // Search using experience
@@ -60,7 +61,7 @@ class JobsController extends Controller
         } else {
             $jobs = $jobs->orderBy('created_at','DESC');
         }
-        
+
 
         $jobs = $jobs->paginate(9);
 
@@ -69,12 +70,12 @@ class JobsController extends Controller
             'categories' => $categories,
             'jobTypes' => $jobTypes,
             'jobs' => $jobs,
-            'jobTypeArray' => $request->job_type
+            'jobTypeArray' => $jobTypeArray
         ]);
     }
 
     // This method will show job detail page
-   
 
-    
+
+
 }
