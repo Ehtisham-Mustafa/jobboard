@@ -75,7 +75,14 @@ class JobsController extends Controller
     }
 
     // This method will show job detail page
+        public function detail($id){
+        $job=BoardJob::where(['id'=>$id,'status'=>1])->with(['jobType','category'])->first();
+        if($job==NULL){
+            abort(404);
+        }
 
+       return view('front.jobDetail',['job'=>$job]);
+        }
 
 
 }
