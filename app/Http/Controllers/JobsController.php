@@ -84,5 +84,55 @@ class JobsController extends Controller
        return view('front.jobDetail',['job'=>$job]);
         }
 
+        public function applyJob(Request $request){
+            $id=$request->id;
+            $job=BoardJob::where('id',$id)->first();
+    
+           if($job==NULL){
+            $message='Job does not exist';
+            session()->flash('error',$message);
+            return response()->json([
+                'status'=>false,
+                'message'=>$message
+            ]);
+        }
+            //you can not appply on your own job
+            $employer_id=$job->user_id;
+            if($employer_id==Auth::user()->id){
+                $message='You can not apply on your own job';
+                session()->flash('error',$message);
+                return response()->json([
+                    'status'=>false,
+                    'message'=>$message
+                ]);
+
+            }
+
+            // You can not apply on a job twice 
+            $job_application_count=JobApplication::where(['user_id'=>Auth::user()->id,'board_job_id'=>$id])->count();
+            if($job_application_count>0){
+                $message='You already applied on this job';
+                session()->flash('error',$message);
+                return response()->json([
+                    'status'=>false,
+                    'message'=>$message
+                ]);
+
+            }
+            $application=new JobApplication();
+            $application->board_job_id=$id;
+            $application->user_id=Auth::user()->id;
+            $application->employer_id=$employer_id;
+            $application->applied_date=now();
+            $application->save();
+            $message='You have successfully applied';
+            session()->flash('success',$message);
+            return response()->json([
+                'status'=>true,
+                'message'=>$message
+            ]);
+
+            }
+    
 
 }
