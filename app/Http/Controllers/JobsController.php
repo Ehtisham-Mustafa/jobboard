@@ -125,6 +125,13 @@ class JobsController extends Controller
             $application->employer_id=$employer_id;
             $application->applied_date=now();
             $application->save();
+            //send notification email to employer
+            $employer=User::where('id',$employer_id)->first();
+            $mailData=['employer'=>$employer,
+            'user'=>Auth::user(),
+            'job'=>$job
+        ];
+            Mail::to($employer->email)->send(new JobNotificationEmail($mailData));
             $message='You have successfully applied';
             session()->flash('success',$message);
             return response()->json([
