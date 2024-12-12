@@ -42,12 +42,12 @@
                                         @foreach ($savedJobs as $savedJob)
                                         <tr class="active">
                                             <td>
-                                                <div class="job-name fw-500">{{ $savedJob->job->title }}</div>
-                                                <div class="info1">{{ $savedJob->job->jobType->name }} . {{ $savedJob->job->location }}</div>
+                                                <div class="job-name fw-500">{{ $savedJob->boardJob->title }}</div>
+                                                <div class="info1">{{ $savedJob->boardJob->jobType->name }} . {{ $savedJob->boardJob->location }}</div>
                                             </td>
-                                            <td>{{ $savedJob->job->applications->count() }} Applications</td>
+                                            <td>{{ $savedJob->boardJob->applications->count() }} Applications</td>
                                             <td>
-                                                @if ($savedJob->job->status == 1)
+                                                @if ($savedJob->boardJob->status == 1)
                                                 <div class="job-status text-capitalize">Active</div>
                                                 @else
                                                 <div class="job-status text-capitalize">Block</div>
@@ -59,7 +59,7 @@
                                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li><a class="dropdown-item" href="{{ route("jobDetail",$savedJob->job_id) }}"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
+                                                        <li><a class="dropdown-item" href="{{ route("jobDetail",$savedJob->board_job_id) }}"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
                                                         <li><a class="dropdown-item" href="#" onclick="removeJob({{ $savedJob->id }})" ><i class="fa fa-trash" aria-hidden="true"></i> Remove</a></li>
                                                     </ul>
                                                 </div>
@@ -86,7 +86,6 @@
     </div>
 </section>
 @endsection
-@section('customJs')
 <script type="text/javascript">   
 function removeJob(id) {
     if (confirm("Are you sure you want to remove?")) {
@@ -102,4 +101,3 @@ function removeJob(id) {
     } 
 }
 </script>
-@endsection
