@@ -14,6 +14,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use App\Models\Category;
 use App\Models\JobType;
 use App\Models\BoardJob;
+use App\Models\JobApplication;
 
 class AccountController extends Controller
 {
@@ -279,6 +280,29 @@ class AccountController extends Controller
         return response()->json([
             'status' => true
         ]);
+
+    }
+    public function myJobApplications(){
+        $jobApplications=JobApplication::where('user_id',Auth::user()->id)
+        ->with('boardJob','boardJob.jobType','boardJob.applications')->paginate(10);
+        return view('front.account.job.my-job-applications',[
+            'jobApplications'=>$jobApplications
+        ]);
+    }
+
+    public function removeJobs(Request $request){
+               $jobApplication= JobApplication::where(['id'=>$request->id,'user_id'=>Auth::id()])->first();
+               session()->flash('error','Job application not found');
+               if($jobApplication==null){
+                return response()->json([
+                    'status'=>false
+                ]);
+               }
+               JobApplication::find($request->id)->delete();
+               session()->flash('success','Job application removed successfully');
+               return response()->json([
+                'status'=>true
+            ]);
 
     }
 

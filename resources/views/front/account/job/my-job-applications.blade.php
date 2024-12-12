@@ -43,13 +43,13 @@
                                         @foreach ($jobApplications as $jobApplication)
                                         <tr class="active">
                                             <td>
-                                                <div class="job-name fw-500">{{ $jobApplication->job->title }}</div>
-                                                <div class="info1">{{ $jobApplication->job->jobType->name }} . {{ $jobApplication->job->location }}</div>
+                                                <div class="job-name fw-500">{{ $jobApplication->boardJob->title }}</div>
+                                                <div class="info1">{{ $jobApplication->boardJob->jobType->name }} . {{ $jobApplication->boardJob->location }}</div>
                                             </td>
                                             <td>{{ \Carbon\Carbon::parse($jobApplication->applied_date)->format('d M, Y') }}</td>
-                                            <td>{{ $jobApplication->job->applications->count() }} Applications</td>
+                                            <td>{{ $jobApplication->boardJob->applications->count() }} Applications</td>
                                             <td>
-                                                @if ($jobApplication->job->status == 1)
+                                                @if ($jobApplication->boardJob->status == 1)
                                                 <div class="job-status text-capitalize">Active</div>
                                                 @else
                                                 <div class="job-status text-capitalize">Block</div>
@@ -61,7 +61,7 @@
                                                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                     </button>
                                                     <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li><a class="dropdown-item" href="{{ route("jobDetail",$jobApplication->job_id) }}"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
+                                                        <li><a class="dropdown-item" href="{{ route("jobDetail",$jobApplication->board_job_id) }}"> <i class="fa fa-eye" aria-hidden="true"></i> View</a></li>
                                                         <li><a class="dropdown-item" href="#" onclick="removeJob({{ $jobApplication->id }})" ><i class="fa fa-trash" aria-hidden="true"></i> Remove</a></li>
                                                     </ul>
                                                 </div>
@@ -88,7 +88,7 @@
     </div>
 </section>
 @endsection
-@section('customJs')
+
 <script type="text/javascript">   
 function removeJob(id) {
     if (confirm("Are you sure you want to remove?")) {
@@ -104,4 +104,3 @@ function removeJob(id) {
     } 
 }
 </script>
-@endsection
