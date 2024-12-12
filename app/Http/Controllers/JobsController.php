@@ -78,15 +78,22 @@ class JobsController extends Controller
     // This method will show job detail page
     public function detail($id)
     {
+        $count=0;
         $job = BoardJob::where(['id' => $id, 'status' => 1])->with(['jobType', 'category'])->first();
         if ($job == NULL) {
             abort(404);
         }
+        if(Auth::user()){
         $count=SavedJob::where([
             'user_id'=>Auth::id(),
             'board_job_id'=>$id
         ])->count();
-        return view('front.jobDetail', ['job' => $job,'count'=>$count]);
+        }
+
+        //fetch applications
+        $applications=JobApplication::where('board_job_id',$id)->with('user')->get();
+
+        return view('front.jobDetail', ['job' => $job,'count'=>$count,'applications'=>$applications]);
     }
 
     public function applyJob(Request $request)

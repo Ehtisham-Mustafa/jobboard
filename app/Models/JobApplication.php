@@ -12,4 +12,7 @@ class JobApplication extends Model
     public function boardJob(){
         return $this->belongsTo(BoardJob::class);
     }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }
