@@ -82,8 +82,11 @@ class JobsController extends Controller
         if ($job == NULL) {
             abort(404);
         }
-
-        return view('front.jobDetail', ['job' => $job]);
+        $count=SavedJob::where([
+            'user_id'=>Auth::id(),
+            'board_job_id'=>$id
+        ])->count();
+        return view('front.jobDetail', ['job' => $job,'count'=>$count]);
     }
 
     public function applyJob(Request $request)
@@ -141,4 +144,36 @@ class JobsController extends Controller
             'message' => $message
         ]);
     }
+
+    public function saveJob(Request $request){
+        $id=$request->id;
+        $job=BoardJob::find($id);
+        if($job==null){
+            session()->flash('Job Not Found');
+            return response()->json([
+                'status'=>false
+                        ]);
+        }
+
+        //Check if user already saved this job
+        $count=SavedJob::where([
+            'user_id'=>Auth::id(),
+            'board_job_id'=>$id
+        ])->count();
+        if($count>0){
+            session()->flash('error','You already saved this job');
+            return response()->json([
+                'status'=>false
+            ]);
+        }
+        $savedJob=new SavedJob();
+        $savedJob->board_job_id=$id;
+        $savedJob->user_id=Auth::user()->id;
+        $savedJob->save();
+        session()->flash('success','You have successfully saved the job.');
+        return response()->json([
+            'status'=>true
+        ]);
+    }
+
 }
