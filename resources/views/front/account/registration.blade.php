@@ -9,7 +9,7 @@
                     <h1 class="h3">Register</h1>
                     <form action="" name="registrationForm" id="registrationForm">
                         <div class="mb-3">
-                            <label for="" class="mb-2">Name*</label>
+                            <label for=" " class="mb-2">Name*</label>
                             <input type="text" name="name" id="name" class="form-control" placeholder="Enter Name">
                             <p></p>
                         </div>

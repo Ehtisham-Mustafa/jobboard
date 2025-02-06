@@ -80,13 +80,18 @@ class AccountController extends Controller
     public function updateProfile(Request $request)
     {
         $id = Auth::id();
-        $request->validate([
+        $validator=Validator::make($request->all(),[
             'name' => 'required|min:5',
             'email' => 'required|email|unique:users,email,' . $id . ',id',
             'designation' => 'required',
             'phone' => 'required'
         ]);
-
+        if($validator->fails()){
+            return response()->json([
+                'status'=>false,
+                'errors'=>$validator->errors(),
+            ]);
+        }
         $user = User::find($id);
 
         if ($user) {
@@ -98,10 +103,40 @@ class AccountController extends Controller
 
             session()->flash('success', 'Profile updated successfully.');
 
-            return redirect()->back()->with('success', 'Profile updated successfully.');
+            return response()->json([
+                'status'=>true,
+            ]);
         } else {
-            return redirect()->back()->withErrors($request->all);
+            return response()->json(['status' => false, 'errors' => $validator->errors()]);
         }
+    }
+    public function updatePassword(Request $request){
+        $validator=Validator::make($request->all(),[
+            'old_password'=>'required',
+            'new_password'=>'required|min:5',
+            'confirm_password'=>'required|same:new_password'
+        ]);
+
+        if($validator->fails()){
+            return response()->json([
+                'status'=>false,
+                'errors'=>$validator->errors(),
+            ]);
+        }
+
+        if(Hash::check($request->old_password,Auth::user()->password)==false){
+            session()->flash('error','Your old password is incorrect.');
+            return response()->json([
+                'status'=>true,
+            ]);
+        }
+        $user=User::find(Auth::user()->id);
+        $user->password=Hash::make($request->new_password);
+        $user->save();
+        session()->flash('success','Password Updated Successfuly.');
+        return response()->json([
+            'status'=>true,
+        ]);
     }
     public function logout()
     {
